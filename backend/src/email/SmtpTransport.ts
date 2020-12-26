@@ -7,11 +7,11 @@ export default class SmtpTransport implements TransportInterface {
         return nodemailer.createTransport({
             // @ts-ignore
             host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
-            secure: process.env.EMAIL_TLS, 
+            port: process.env.EMAIL_PORT,  
+            // secure: process.env.EMAIL_TLS, 
             auth: {
               user: process.env.EMAIL_AUTH_USER, 
-              pass: process.env.EMAIL_AUTH_PÁSSWORD,
+              pass: process.env.EMAIL_AUTH_PASSWORD,
             },
           });
     }

@@ -2,9 +2,15 @@ import { Express } from "express";
 import handlerExceptionMiddleware from "../middlewares/HandlerExceptionMiddleware";
 import UserEndpointFactory from "../factories/UserEndpointFactory";
 import AuthEndpointFactory from "../factories/AuthEndpointFactory";
+import EmailEndpointFactory from "../factories/EmailEndpointFactory";
+import authorizationMiddleware from "../middlewares/AuthorizationMiddleware";
+import getUserAuthenticatedMiddleware from "../middlewares/GetUserAuthenticatedMiddleware";
+import NewsletterEndpointFactory from "../factories/NewsletterEndpointFactory";
 
 const userEndpoint = new UserEndpointFactory().make({});
 const authEndpoint = new AuthEndpointFactory().make({});
+const emailEndpoint = new EmailEndpointFactory().make({});
+const newsletterEndpoint = new NewsletterEndpointFactory().make({});
 
 export default (app: Express) => {
 
@@ -14,25 +20,19 @@ export default (app: Express) => {
 
     app.post("/auth", authEndpoint.authenticate);
 
-    app.get("/emails/tracking/open", (request, response) => {
-        let buf = new Buffer(30);
-        response.writeHead(200, { 'Content-Type': 'image/gif' });
-        response.end(buf, 'binary');
-    });
+    app.get("/emails/tracking/open", emailEndpoint.trackOpen);
+    app.get("/emails/tracking/click", emailEndpoint.trackClick);
+    app.post("/emails", 
+        authorizationMiddleware.hasPermission(["create_email"]),
+        getUserAuthenticatedMiddleware,
+        emailEndpoint.create);
 
-    app.get("/emails/tracking/click", (request, response) => {
-        const query : any = request.query;
-        response.redirect(query.url);
-    });
 
-    app.post("/emails", (request, response) => {
-        const datas = request.body;
-        datas.body += `<img src='${process.env.APP_URL}/emails/tracking/open' >`;
-        let url_tracking = `${process.env.APP_URL}/emails/tracking/click?url=`;
-        let regex = /<a href="(.*?)"/g;
-        datas.body = datas.body.replace(regex, `<a href='${url_tracking}$1'`);
-        response.json(datas);
-    });
+    app.post("/newsletters", 
+        authorizationMiddleware.hasPermission(["create_email"]),
+        getUserAuthenticatedMiddleware,
+        newsletterEndpoint.create);
+
 
 
     // Handler exceptions in application.

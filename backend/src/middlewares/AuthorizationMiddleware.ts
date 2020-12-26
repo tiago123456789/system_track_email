@@ -8,11 +8,10 @@ const token = new TokenFactory().make({});
 
 export default {
 
-    hasPermission(permissionsNecessary = []) {
+    hasPermission(permissionsNecessary: Array<string> = []) {
         return async (request: Request, response: Response, next: NextFunction) => {
             try {
                 let accessToken: any = request.headers[CONSTANTES.HEADER_PARAM_AUTHORIZATION];
-
                 if (!accessToken)  {
                     return response.status(401)
                     .json({ msg: "Is necessary informate token in header request!" });
@@ -21,7 +20,7 @@ export default {
                 accessToken = accessToken.replace(CONSTANTES.HEADER_PREFIX_TOKEN_PARAM, "");
 
                 await token.isValid(accessToken);
-                const roles = await token.getValueInPayload("roles", accessToken);
+                const roles = await token.getValueInPayload("permissions", accessToken);
                 const isHasAccessResource = auth.hasPermission(permissionsNecessary, roles);
 
                 if (!isHasAccessResource) {
