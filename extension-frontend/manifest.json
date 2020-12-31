@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+    "name": "System track email",
+    "version": "1.0.0",
+    "browser_action": {
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "notifications",
+        "storage"
+    ],
+    "content_scripts": [
+        {
+          "matches": [
+            "<all_urls>"
+          ],
+          "js": ["app.min.js"]
+        }
+    ],
+    "background": {
+        "scripts": ["app.min.js"],
+        "persistent": false
+    }
+}

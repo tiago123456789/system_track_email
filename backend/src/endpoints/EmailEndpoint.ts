@@ -3,11 +3,15 @@ import EmailValidation from "./validations/EmailValidation";
 import EmailService from "../services/EmailService";
 import Email from "../models/Email";
 import TrackActionEmail from "../models/TrackActionEmail";
+import UserService from "../services/UserService";
+import NotificationInterface from "../notifications/contracts/NotificationInterface";
 
 export default class EmailEndpoint {
 
     constructor(
         private readonly emailService: EmailService,
+        private readonly userService: UserService,
+        private readonly websocketNotification: NotificationInterface
     ) {
         this.create = this.create.bind(this);
         this.trackClick = this.trackClick.bind(this);
@@ -16,11 +20,18 @@ export default class EmailEndpoint {
 
     public async trackClick(request: Request, response: Response, next: NextFunction) {
         try {
-            const { link, id, to } : any = request.query;
+            const { link, id, to, userId } : any = request.query;
             const trackActionEmail: TrackActionEmail = new TrackActionEmail(
                 id, to, "click", link
             );
             await this.emailService.trackClick(trackActionEmail);
+            const user = await this.userService.findById(userId);
+            await this.websocketNotification.notify({
+                // @ts-ignore
+                "channel": "app", "event": user["token"], data: {
+                    message: `${to} clicked in ${link} on email ✓✓`
+                }
+            });
             response.redirect(link);
         } catch(error) {
             next(error);
@@ -29,11 +40,18 @@ export default class EmailEndpoint {
 
     public async trackOpen(request: Request, response: Response, next: NextFunction) {
         try {
-            const { id, to } : any = request.query;
+            const { id, to, userId } : any = request.query;
             const trackActionEmail: TrackActionEmail = new TrackActionEmail(
                 id, to, "click", null
             );
             await this.emailService.trackOpen(trackActionEmail);
+            const user = await this.userService.findById(userId);
+            await this.websocketNotification.notify({
+                // @ts-ignore
+                "channel": "app", "event": user["token"], data: {
+                    message: `${to} readed email ✓✓`
+                }
+            });
             let buf = new Buffer(30);
             response.writeHead(200, { 'Content-Type': 'image/gif' });
             return response.end(buf, 'binary');

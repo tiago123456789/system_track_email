@@ -2,3 +2,6 @@ backend/.env
 backend/logs
 build
 backend/node_modules
+node_modules
+extension-frontend/node_modules
+extension-frontend/.env

@@ -5,12 +5,6 @@ import EmailRepositoryInterface from "./contracts/EmailRepositoryInterface";
 
 export default class EmailRepository implements EmailRepositoryInterface {
 
-    private model: any;
-
-    constructor() {
-        this.model = connection("emails");
-    }
-
     trackOpen(trackActionEmail: TrackActionEmail): Promise<any> {
         return connection("actions_tracked").insert({
             email_id: trackActionEmail.emailId,
@@ -30,7 +24,7 @@ export default class EmailRepository implements EmailRepositoryInterface {
     
 
     create(email: Email): Promise<any> {
-        return this.model.insert({
+        return connection("emails").insert({
             subject: email.subject,
             from: email.from,
             to: email.to,

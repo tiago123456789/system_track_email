@@ -23,6 +23,7 @@
     "knex": "^0.21.14",
     "mysql2": "^2.2.5",
     "nodemailer": "^6.4.17",
+    "pusher": "^4.0.2",
     "winston": "^3.3.3"
   },
   "devDependencies": {
