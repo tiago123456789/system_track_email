@@ -49,7 +49,8 @@ export default class UserService {
         // @ts-ignore
         user.password = await this.encrypter.getHash(user.password);
         user.token = this.uuid.get();
-        return this.repository.create(user);
+        const userCreated = await this.repository.create(user);
+        return this.findById(userCreated[0]);
     }
 
     public async findById(id: Number) {

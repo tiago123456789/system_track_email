@@ -1,0 +1,68 @@
+{"message":"{\"name\":\"name is required\"}","level":"info"}
+{"message":"Newsletter with name already exist!","level":"info"}
+{"message":"Newsletter with name already exist!","level":"info"}
+{"message":"{\"email\":\"email is required\"}","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"select *, * from `newsletters` where `id` = '1' and `id` = '11' - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* from `newsletters` where `id` = '1' and `id` = '11'' at line 1","level":"error"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Not found register!","level":"info"}
+{"message":"Cannot read property 'newsletterService' of undefined","level":"error"}
+{"message":"Not found register!","level":"info"}
+{"message":"{\"subject\":\"subject is required\",\"from\":\"from is required\",\"body\":\"body is required\"}","level":"info"}
+{"message":"insert into `emails` (`body`, `from`, `subject`, `to`, `user_id`) values ('<p>What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \\'Content here, content here\\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \\'lorem ipsum\\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). Where does it come from? Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \\\"de Finibus Bonorum et Malorum\\\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \\\"Lorem ipsum dolor sit amet..\\\", comes from a line in section 1.10.32.</p>', 'teste@gmail.com', 'Testando', 'tiagorosadacost@gmail.com', DEFAULT) - Field 'user_id' doesn't have a default value","level":"error"}
+{"message":"Cannot create property 'to' on number '6'","level":"error"}
+{"message":"Credentials invalids!","level":"info"}
+{"message":"Credentials invalids!","level":"info"}
+{"message":"select * from `permissions` - Table 'system_track_email.permissions' doesn't exist","level":"error"}
+{"message":"{\"name\":\"name is required\"}","level":"info"}
+{"message":"Unexpected token } in JSON at position 27","level":"error"}
+{"message":"{\"permissions\":\"permissions is required\"}","level":"info"}
+{"message":"Undefined binding(s) detected when compiling SELECT. Undefined column(s): [id] query: select `id` from `users` where `id` = ?","level":"error"}
+{"message":"Undefined binding(s) detected when compiling SELECT. Undefined column(s): [id] query: select `id` from `users` where `id` = ?","level":"error"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Unexpected token S in JSON at position 0","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"Someone permission mencionated not exist!","level":"info"}
+{"message":"insert into `actions_tracked` (`actions`, `email_id`, `to`) values ('open', '27', 'tiagorosadacost@gmail.com') - Cannot add or update a child row: a foreign key constraint fails (`system_track_email`.`actions_tracked`, CONSTRAINT `actions_tracked_email_id_foreign` FOREIGN KEY (`email_id`) REFERENCES `emails` (`id`))","level":"error"}
+{"message":"insert into `actions_tracked` (`actions`, `email_id`, `to`) values ('open', '27', 'tiagorosadacost@gmail.com') - Cannot add or update a child row: a foreign key constraint fails (`system_track_email`.`actions_tracked`, CONSTRAINT `actions_tracked_email_id_foreign` FOREIGN KEY (`email_id`) REFERENCES `emails` (`id`))","level":"error"}
+{"message":"Not found register!","level":"info"}
+{"message":"insert into `newsletters_emails` (`meail_id`, `newsletter_id`) values (7, '1') - Unknown column 'meail_id' in 'field list'","level":"error"}
+{"message":"connect ECONNREFUSED 127.0.0.1:3306","level":"error"}
+{"message":"select * from `users` where `email` = 'teste123@gmail.com' limit 1 - Table 'system_track_email.users' doesn't exist","level":"error"}
+{"message":"Credentials invalids!","level":"info","time":"2021-01-06 13:34:44"}
+{"message":"Credentials invalids!","level":"info","app":"system-track-email","time":"2021-01-06 13:45:03"}
+{"message":"Credentials invalids!","level":"info","app":"system-track-email","time":"2021-01-06 13:45:57"}
+{"message":"Credentials invalids!","level":"info","app":"system-track-email","time":"2021-01-06 13:46:59"}
+{"message":"Credentials invalids!","level":"info","app":"system-track-email","time":"2021-01-06 13:48:57"}
+{"message":"Credentials invalids!","level":"info","app":"system-track-email","timestamp":"2021-01-06T13:51:54.223Z"}
+{"message":"Credentials invalids!","level":"info","app":"system-track-email","timestamp":"2021-01-06T13:52:54.494Z"}
+{"uuid":"cb4edb61-c947-4b51-bb5d-f28f0a102559","message":"Credentials invalids!","level":"info","app":"system-track-email","timestamp":"2021-01-06T13:56:58.890Z"}
+{"uuid":"e42605be-edc4-4d91-894f-116518b5d15e","message":"Credentials invalids!","level":"info","app":"system-track-email","timestamp":"2021-01-06T13:59:20.805Z"}
+{"uuid":"f7856b75-cdbc-441e-9239-7bd040969445","message":"Sending email to teste@gmail.com","level":"info","app":"system-track-email","timestamp":"2021-01-06T14:07:37.926Z"}
+{"uuid":"f7856b75-cdbc-441e-9239-7bd040969445","message":"Sended email to teste@gmail.com with success.","level":"info","app":"system-track-email","timestamp":"2021-01-06T14:07:37.926Z"}
+{"uuid":"de02c700-e877-4bce-a63d-5afdd47e889c","message":"Create email and send to teste@gmail.com","level":"info","app":"system-track-email","timestamp":"2021-01-06T14:13:20.177Z"}
+{"uuid":"de02c700-e877-4bce-a63d-5afdd47e889c","message":"Sending email to teste@gmail.com","level":"info","app":"system-track-email","timestamp":"2021-01-06T14:13:18.108Z"}
+{"uuid":"de02c700-e877-4bce-a63d-5afdd47e889c","message":"Sended email to teste@gmail.com with success.","level":"info","app":"system-track-email","timestamp":"2021-01-06T14:13:18.108Z"}
+{"uuid":"bda7d04c-bceb-4cd2-b1b0-65f549fc074e","message":"Create email and send to teste@gmail.com","level":"info","app":"system-track-email","timestamp":"2021-01-06T14:16:09.303Z"}
+{"uuid":"bda7d04c-bceb-4cd2-b1b0-65f549fc074e","message":"Sending email to teste@gmail.com","level":"info","app":"system-track-email","timestamp":"2021-01-06T14:16:09.303Z"}
+{"uuid":"bda7d04c-bceb-4cd2-b1b0-65f549fc074e","message":"Sended email to teste@gmail.com with success.","level":"info","app":"system-track-email","timestamp":"2021-01-06T14:16:09.303Z"}

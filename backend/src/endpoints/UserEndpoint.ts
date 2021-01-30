@@ -3,6 +3,7 @@ import { NextFunction, Request, Response }  from "express";
 import UserValidation from "./validations/UserValidation";
 import addPermissionValidation from "./validations/AddPermissionValidation";
 import PermissionValidation from "./validations/PermissionValidation";
+import AddPermissionValidation from "./validations/AddPermissionValidation";
 
 export default class UserEndpoint {
 
@@ -37,10 +38,11 @@ export default class UserEndpoint {
 
     public async addPermissionsForUser(request: Request, response: Response, next: NextFunction) { 
         try {
+            const id = request.params.id;
             const data = request.body;
-            addPermissionValidation.validate(data);
+            AddPermissionValidation.validate(data);
             // @ts-ignore
-            await this.userService.addPermissions(request.userId, data.permissions);
+            await this.userService.addPermissions(id, data.permissions);
             response.sendStatus(201);
         } catch(error) {
             next(error);
@@ -51,8 +53,9 @@ export default class UserEndpoint {
         try {
             const newUser = request.body;
             UserValidation.validate(newUser);
-            await this.userService.create(newUser);
-            response.sendStatus(201);
+            const userCreated = await this.userService.create(newUser);
+            delete userCreated.password;
+            response.status(201).json(userCreated);
         } catch(error) {
             next(error);
         }

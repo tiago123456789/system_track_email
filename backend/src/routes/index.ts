@@ -13,31 +13,323 @@ const emailEndpoint = new EmailEndpointFactory().make({});
 const newsletterEndpoint = new NewsletterEndpointFactory().make({});
 
 export default (app: Express) => {
+    /**
+   * @swagger
+   * definitions:
+   *  Authentication:
+   *    properties:
+   *      email: 
+   *          type: string
+   *      password:
+   *          type: string
+   * 
+   *  Email:
+   *    properties:
+   *      subject: 
+   *          type: string
+   *      from:
+   *          type: string
+   *      to: 
+   *          type: string
+   *      body:
+   *          type: string
+   * 
+   *  Newsletter:
+   *      properties:
+   *          name:
+   *              type: string
+   * 
+   *  Subscribe:
+   *      properties:
+   *          name:
+   *            type: string
+   * 
+   *  Permission:
+   *      properties:
+   *          name:
+   *            type: string
+   *  
+   *  PublishNewsletter:
+   *      properties:
+   *           subject: 
+   *              type: string
+   *           from: 
+   *              type: string
+   *           body:
+   *              type: string
+   * 
+   *  User:
+   *     properties:
+   *        username: 
+   *            type: string
+   *        email: 
+   *            type: string
+   *        password: 
+   *            type: string
+   * 
+   *  AddPermissionUser:
+   *      properties:
+   *         permissions: 
+   *             type: array
+   *             items:
+   *                type: integer
+   *         
+   */
 
-    app.get("/", (request, response) => response.json({ msg: "It's work!!!" }))
+  /**
+  * @swagger
+  * /users:
+  *   post:
+  *     tags:
+  *       - User
+  *     summary: Create new user
+  *     parameters:
+  *       - name: body
+  *         required: true
+  *         type: object
+  *         schema: 
+  *           $ref: "#/definitions/User"
+  *         in: body
+  *       - name: Authorization
+  *         required: true
+  *         type: string
+  *         in: header
+  *     produces:
+  *       - application/json
+  *     responses:
+  *        200: 
+  *          description: Operation executed success.
+  *        400:
+  *          description: Datas invalids.
+  *        409:
+  *          description: User's emails can't used.
+  */
+    app.post("/users",
+        authorizationMiddleware.hasPermission(["create_user"]),
+        getUserAuthenticatedMiddleware,
+        userEndpoint.create
+    );
 
-    app.post("/users", userEndpoint.create);
-    app.get("/users/permissions", userEndpoint.getPermissions);
-    app.post("/users/permissions", userEndpoint.createPermission);
-    app.post("/users/:id/permissions", getUserAuthenticatedMiddleware, userEndpoint.addPermissionsForUser);
+    /**
+  * @swagger
+  * /users/permissions:
+  *   get:
+  *     tags:
+  *       - User
+  *     summary: Get permissions availibily
+  *     parameters:
+  *       - name: authorization
+  *         required: true
+  *         type: string
+  *         in: header
+  *     produces:
+  *       - application/json
+  *     responses:
+  *        200: 
+  *          description: Operation executed success.
+  */
+    app.get("/users/permissions",
+        authorizationMiddleware.hasPermission(["list_permission"]),
+        getUserAuthenticatedMiddleware,
+        userEndpoint.getPermissions
+    );
+
+     /**
+  * @swagger
+  * /users/permissions:
+  *   post:
+  *     tags:
+  *       - User
+  *     summary: Create new permissions
+  *     parameters:
+  *       - name: body
+  *         required: true
+  *         type: object
+  *         schema: 
+  *           $ref: "#/definitions/Permission"
+  *         in: body
+  *       - name: authorization
+  *         required: true
+  *         type: string
+  *         in: header
+  *     produces:
+  *       - application/json
+  *     responses:
+  *        200: 
+  *          description: Operation executed success.
+  *        400:
+  *          description: Datas invalids.
+  */
+    app.post("/users/permissions",
+        authorizationMiddleware.hasPermission(["create_permission"]),
+        getUserAuthenticatedMiddleware,
+        userEndpoint.createPermission
+    );
+
+      /**
+  * @swagger
+  * /users/{id}/permissions:
+  *   post:
+  *     tags:
+  *       - User
+  *     summary: Add permissions to user
+  *     parameters:
+  *       - name: id
+  *         required: true
+  *         type: string
+  *         in: path
+  *       - name: body
+  *         required: true
+  *         type: object
+  *         schema: 
+  *           $ref: "#/definitions/AddPermissionUser"
+  *         in: body
+  *       - name: authorization
+  *         required: true
+  *         type: string
+  *         in: header
+  *     produces:
+  *       - application/json
+  *     responses:
+  *        200: 
+  *          description: Operation executed success.
+  *        400:
+  *          description: Datas invalids.
+  *        404:
+  *          description: Not found users ou not found permission.
+  */
+    app.post("/users/:id/permissions",
+        authorizationMiddleware.hasPermission(["add_permission_user"]),
+        getUserAuthenticatedMiddleware,
+        userEndpoint.addPermissionsForUser
+    );
 
 
-
+    /**
+     * @swagger
+     * /auth:
+     *   post:
+     *     tags:
+     *       - Authentication
+     *     summary: User authentication 
+     *     parameters:
+     *       - name: body
+     *         required: true
+     *         type: object
+     *         schema: 
+     *           $ref: "#/definitions/Authentication"
+     *         in: body
+     *     produces:
+     *       - application/json
+     *     responses:
+     *        200: 
+     *          description: Operation executed success.
+     *        400:
+     *          description: Datas invalids.
+     *        401:
+     *          description: Credentials mencinoated invalids.
+     */
     app.post("/auth", authEndpoint.authenticate);
 
     app.get("/emails/tracking/open", emailEndpoint.trackOpen);
     app.get("/emails/tracking/click", emailEndpoint.trackClick);
+
+    /**
+    * @swagger
+    * /emails:
+    *   post:
+    *     tags:
+    *       - Email
+    *     summary: Create email and after send it.
+    *     parameters:
+    *       - name: body
+    *         required: true
+    *         type: object
+    *         schema: 
+    *           $ref: "#/definitions/Email"
+    *         in: body
+    *       - name: authorization
+    *         required: true
+    *         type: string
+    *         in: header
+    *     produces:
+    *       - application/json
+    *     responses:
+    *        201: 
+    *          description: Create email success.
+    *        400:
+    *          description: Datas invalids.
+    */
     app.post("/emails",
         authorizationMiddleware.hasPermission(["create_email"]),
         getUserAuthenticatedMiddleware,
         emailEndpoint.create);
 
-
+    /**
+     * @swagger
+     * /newsletters:
+     *   post:
+     *     tags:
+     *       - Newsletters
+     *     summary: Create newsletter.
+     *     parameters:
+     *       - name: body
+     *         required: true
+     *         type: object
+     *         schema: 
+     *           $ref: "#/definitions/Newsletter"
+     *         in: body
+     *       - name: authorization
+     *         required: true
+     *         type: string
+     *         in: header
+     *     produces:
+     *       - application/json
+     *     responses:
+     *        201: 
+     *          description: Create email success.
+     *        400:
+     *          description: Datas invalids.
+     *        409:
+     *          description: Newsletter already exist.
+     */
     app.post("/newsletters",
         authorizationMiddleware.hasPermission(["create_newsletter"]),
         getUserAuthenticatedMiddleware,
         newsletterEndpoint.create);
 
+    /**
+     * @swagger
+     * /newsletters/{id}/subscribers:
+     *   post:
+     *     tags:
+     *       - Newsletters
+     *     summary: Subscribe in one newsletter.
+     *     parameters:
+     *       - name: id
+     *         required: true
+     *         type: string
+     *         in: path
+     *       - name: body
+     *         required: true
+     *         type: object
+     *         schema: 
+     *           $ref: "#/definitions/Subscribe"
+     *         in: body
+     *       - name: authorization
+     *         required: true
+     *         type: string
+     *         in: header
+     *     produces:
+     *       - application/json
+     *     responses:
+     *        201: 
+     *          description: Create email success.
+     *        400:
+     *          description: Datas invalids.
+     *        409:
+     *          description: Newsletter already exist.
+     */
     app.post("/newsletters/:id/subscribers",
         authorizationMiddleware.hasPermission(["create_newsletter"]),
         getUserAuthenticatedMiddleware,
@@ -46,12 +338,41 @@ export default (app: Express) => {
     app.get("/newsletters/:newsletterId/subscribers/:id",
         newsletterEndpoint.unsubscribe);
 
+    /**
+    * @swagger
+    * /publishtions/newsletters/{id} :
+    *   post:
+    *     tags:
+    *       - Newsletters
+    *     summary: Publish newsletter for subscribers.
+    *     parameters:
+    *       - name: id
+    *         required: true
+    *         type: string
+    *         in: path
+    *       - name: body
+    *         required: true
+    *         type: object
+    *         schema: 
+    *           $ref: "#/definitions/PublishNewsletter"
+    *         in: body
+    *       - name: authorization
+    *         required: true
+    *         type: string
+    *         in: header
+    *     produces:
+    *       - application/json
+    *     responses:
+    *        201: 
+    *          description: Create email success.
+    *        400:
+    *          description: Datas invalids.
+    */
     app.post("/publishtions/newsletters/:id",
         authorizationMiddleware.hasPermission(["publish_newsletter"]),
         getUserAuthenticatedMiddleware,
         newsletterEndpoint.publish);
 
-
-        // Handler exceptions in application.
+    // Handler exceptions in application.
     app.use(handlerExceptionMiddleware);
 }

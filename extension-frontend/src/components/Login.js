@@ -32,6 +32,10 @@ export default class Login extends Component {
         this._authService.authenticate(this.state.token);
         this.setState({ isAuthenticated: true })
         this.cleanInput();
+        var port = chrome.extension.connect({ 
+            name: "Background communication"
+        });
+        port.postMessage("");
     }
 
     resetToken() {

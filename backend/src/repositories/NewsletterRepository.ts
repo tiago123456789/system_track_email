@@ -9,7 +9,7 @@ export default class NewsletterRepository implements NewsletterRepositoryInterfa
 
     relateNewsletterWithEmail(newsletterId: Number, emailId: Number): Promise<any> {
         return connection("newsletters_emails").insert({ 
-            "newsletter_id": newsletterId, "meail_id": emailId
+            "newsletter_id": newsletterId, "email_id": emailId
         });
     }
 

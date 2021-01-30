@@ -50,7 +50,8 @@ class UserRepository implements UserRepositoryInterface {
         return connection("users").insert({
             username: user.username,
             email: user.email,
-            password: user.password
+            password: user.password,
+            token: user.token
         });
     }
 

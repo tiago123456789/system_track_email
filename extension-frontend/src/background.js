@@ -12,11 +12,13 @@ function notifyReadedAndOpenedEmails() {
     }
 
     realtimeService.listen(
-        "app", 
-        authService.getToken(), 
+        "app",
+        authService.getToken(),
         notificationService.notify);
 }
 
-setInterval(function() {
-    notifyReadedAndOpenedEmails();
-}, 30000);
+chrome.extension.onConnect.addListener(function (port) {
+    port.onMessage.addListener(function () {
+        notifyReadedAndOpenedEmails();
+    });
+});

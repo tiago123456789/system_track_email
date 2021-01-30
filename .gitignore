@@ -1,7 +1,9 @@
-backend/.env
-backend/logs
-build
-backend/node_modules
+# package directories
 node_modules
-extension-frontend/node_modules
-extension-frontend/.env
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# Webpack directories
+.webpack
