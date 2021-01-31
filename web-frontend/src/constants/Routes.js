@@ -1,8 +1,13 @@
 export default ({
     LOGIN: "/login",
-    ACCESS_LINK_TODOS: "/dashboard/todos/:link",
+    USERS: "/dashboard/users",
+    EMAILS: "/dashboard/emails",
+    NEW_EMAIL: "/dashboard/emails/new",
+    NEWSLETTERS: "/dashboard/newsletter",
+    NEWSLETTER_PUBLISH: "/dashboard/newsletter/:id/publish",
+    PERMISSIONS: "/dashboard/permissions",
+    NEW_PERMISSION: "/dashboard/permissions/new",
     TODOS: "/dashboard/todos",
-    RESET_PASSWORD: "/reset-password",
     DASHBOARD: "/dashboard",
     PUBLIC_ROUTES: ["/login", "/reset-password"]
 })

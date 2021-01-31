@@ -1,6 +1,6 @@
 export default ({
     LOCALSTORAGE: {
-        USER_ID: "user_id"
+        ACCESS_TOKEN: "accessToken"
     },
     HEADERS: {
         AUTHORIZATION: "Authorization",

@@ -28,8 +28,10 @@
 
 <script>
 import "@/assets/css/dashboard.css";
-import authService from '../../services/AuthService';
+import AuthService from '../../services/AuthService';
 import ROUTES from '../../constants/Routes';
+
+const authService = new AuthService();
 
 export default {
   name: "Header",

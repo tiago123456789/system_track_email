@@ -7,6 +7,10 @@ export default class NewsletterRepository implements NewsletterRepositoryInterfa
 
     constructor() { }
 
+    getAllByUserId(userId: Number): Promise<any> {
+        return connection("newsletters").where("user_id", userId).select(); 
+    }
+
     relateNewsletterWithEmail(newsletterId: Number, emailId: Number): Promise<any> {
         return connection("newsletters_emails").insert({ 
             "newsletter_id": newsletterId, "email_id": emailId

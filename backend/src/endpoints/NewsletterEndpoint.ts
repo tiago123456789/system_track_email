@@ -16,6 +16,7 @@ export default class NewsletterEndpoint {
         this.subscribe = this.subscribe.bind(this);
         this.unsubscribe = this.unsubscribe.bind(this); 
         this.publish = this.publish.bind(this);
+        this.getAllByUserId = this.getAllByUserId.bind(this);
     }
 
     public async publish(request: Request, response: Response, next: NextFunction) {
@@ -47,6 +48,16 @@ export default class NewsletterEndpoint {
         }
     }
 
+    public async getAllByUserId(request: Request, response: Response, next: NextFunction) {
+        try {
+            // @ts-ignore
+            const newsletters = await this.newsletterService.getAllByUserId(request.userId);
+            response.json(newsletters);
+        } catch(error) {
+            next(error); 
+        }
+    }
+
     public async unsubscribe(request: Request, response: Response, next: NextFunction) {
         try {
             const id = request.params.id;
@@ -65,8 +76,8 @@ export default class NewsletterEndpoint {
             // @ts-ignore
             newNewsletter.userId = request.userId;
             NewsletterValidation.validate(newNewsletter);
-            await this.newsletterService.create(newNewsletter);
-            response.sendStatus(201);
+            const newsletterCreated = await this.newsletterService.create(newNewsletter);
+            response.status(201).json(newsletterCreated);
         } catch(error) {
             next(error);
         }

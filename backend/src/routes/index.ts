@@ -338,6 +338,31 @@ export default (app: Express) => {
     app.get("/newsletters/:newsletterId/subscribers/:id",
         newsletterEndpoint.unsubscribe);
 
+     /**
+     * @swagger
+     * /newsletters:
+     *   get:
+     *     tags:
+     *       - Newsletters
+     *     summary: Get user's newsletters
+     *     parameters:
+     *       - name: authorization
+     *         required: true
+     *         type: string
+     *         in: header
+     *     produces:
+     *       - application/json
+     *     responses:
+     *        200: 
+     *          description: Create email success.
+     */
+    app.get(
+        "/newsletters",
+        authorizationMiddleware.hasPermission(["create_newsletter"]),
+        getUserAuthenticatedMiddleware, 
+        newsletterEndpoint.getAllByUserId
+    );
+
     /**
     * @swagger
     * /publishtions/newsletters/{id} :

@@ -7,7 +7,7 @@
       >
         <img
           class="mb-4"
-          src="./../../assets/logo.png"
+          src="./../../assets/img/logo.png"
           alt=""
           width="72"
           height="72"
@@ -43,10 +43,11 @@
 
 <script>
 import Credential from "../../models/Credential";
-import authService from "../../services/AuthService";
-import ERROR_MESSAGES from "../../constants/ErrorMessage";
-import APP from "../../constants/App";
+import AuthService from "../../services/AuthService";
+import Constants from "../../constants/App";
 import ROUTES from "../../constants/Routes";
+
+const authService = new AuthService();
 
 export default {
   name: "Login",
@@ -57,25 +58,25 @@ export default {
     };
   },
   mounted() {
-    authService.listenIfUserAuthenticate((user) => {
-      if (user != null) {
-        localStorage.setItem(APP.LOCALSTORAGE.USER_ID, user.uid);
-        this.$toastr.s("User authenticated success!");
-        this.$router.push(ROUTES.DASHBOARD);
-      }
-    })
+    if (authService.isAuthenticated()) {
+      this.$router.push({ path: ROUTES.DASHBOARD })
+    }
   },
   methods: {
     cleanDatas() {
       this.username = "";
       this.password = "";
     },
+
     async authenticate() {
       try {
         const credential = new Credential(this.username, this.password);
-        await authService.authenticate(credential);
+        const data = await authService.authenticate(credential);
+        localStorage.setItem(Constants.LOCALSTORAGE.ACCESS_TOKEN, data.accessToken);
+        this.$router.push({ path: ROUTES.DASHBOARD })
       } catch (error) {
-        this.$toastr.e(ERROR_MESSAGES[error.code]);
+        const message = error.response.data.message;
+        this.$toastr.e(message);
       } finally {
         this.cleanDatas();
       }

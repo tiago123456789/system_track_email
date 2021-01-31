@@ -20,7 +20,8 @@ export default class NewsletterService  {
         if (newsletterWithName) {
             throw new BusinessLogicException(CodeMessageException.NEWSLETTER_NAME_EXIST);
         }
-        return this.repository.create(newsletter);
+        const newsletterCreated = await this.repository.create(newsletter);
+        return new Newsletter(newsletter.name, newsletter.userId, newsletterCreated[0]);
     }
 
     async publish(id: Number, email: Email) {
@@ -47,6 +48,10 @@ export default class NewsletterService  {
     async subscribe(subscriber: Subscriber) {
         await this.findById(subscriber.newsletterId);
         return this.repository.subscribe(subscriber)
+    }
+
+    getAllByUserId(userId: Number): Promise<any> {
+        return this.repository.getAllByUserId(userId);
     }
 
     private async findById(id: Number) {

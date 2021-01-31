@@ -9,7 +9,7 @@ export default class AbstractHttpService {
 
     get(path, accessToken) {
         return axios.get(
-            `${process.env.VUE_API_URL}${path}`, 
+            `${process.env.VUE_APP_API_URL}${path}`, 
             { 
                 headers: {
                     [Constants.HEADERS.AUTHORIZATION]: accessToken
@@ -19,16 +19,16 @@ export default class AbstractHttpService {
     }
 
     post(path, datas, accessToken) {
-        return axios.post(path, datas,  { 
+        return axios.post(`${process.env.VUE_APP_API_URL}${path}`,  datas,  { 
             headers: {
                 [Constants.HEADERS.AUTHORIZATION]: accessToken
             }
-        });
+        }).then(this._extractDatas);
     }
 
     _extractDatas(response) {
-        if (response.datas) {
-            return response.datas;
+        if (response.data) {
+            return response.data;
         }
         return response;
     }

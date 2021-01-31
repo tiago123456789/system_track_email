@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header company="System Vue"   />
+    <Header company="System track email"   />
     <div class="container-fluid row">
     <nav
       id="sidebarMenu"

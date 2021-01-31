@@ -16,4 +16,6 @@ export default interface NewsletterRepositoryInterface {
     unsubscribe(id: Number): Promise<any>;
 
     relateNewsletterWithEmail(newsletterId: Number, emailId: Number): Promise<any>;
+
+    getAllByUserId(userId: Number): Promise<any>;
 }

@@ -8,15 +8,19 @@ export default ({
         },
         {
             name: "Users",
-            route: ROUTES.TODOS
+            route: ROUTES.USERS
         },
         {
             name: "Permissions",
-            route: ROUTES.TODOS
+            route: ROUTES.PERMISSIONS
+        },
+        {
+            name: "Emails",
+            route: ROUTES.EMAILS
         },
         {
             name: "Newsletters",
-            route: ROUTES.TODOS
+            route: ROUTES.NEWSLETTERS
         }
     ]
 });
