@@ -6,16 +6,23 @@ import EmailEndpointFactory from "../factories/EmailEndpointFactory";
 import authorizationMiddleware from "../middlewares/AuthorizationMiddleware";
 import getUserAuthenticatedMiddleware from "../middlewares/GetUserAuthenticatedMiddleware";
 import NewsletterEndpointFactory from "../factories/NewsletterEndpointFactory";
+import ResetPasswordEndpointFactory from "../factories/ResetPasswordEndpointFactory"
 
 const userEndpoint = new UserEndpointFactory().make({});
 const authEndpoint = new AuthEndpointFactory().make({});
 const emailEndpoint = new EmailEndpointFactory().make({});
 const newsletterEndpoint = new NewsletterEndpointFactory().make({});
+const resetPasswordEndpoint = new ResetPasswordEndpointFactory().make({});
 
 export default (app: Express) => {
     /**
    * @swagger
    * definitions:
+   *  ResetPassword:
+   *    properties:
+   *        email:
+   *            type: string       
+   * 
    *  Authentication:
    *    properties:
    *      email: 
@@ -234,6 +241,33 @@ export default (app: Express) => {
     app.get("/emails/tracking/open", emailEndpoint.trackOpen);
     app.get("/emails/tracking/click", emailEndpoint.trackClick);
 
+     /**
+    * @swagger
+    * /emails/{id}/tracks:
+    *   get:
+    *     tags:
+    *       - Email
+    *     summary: Return actions tracked of email
+    *     parameters:
+    *       - name: id
+    *         required: true
+    *         type: string
+    *         in: path
+    *       - name: authorization
+    *         required: true
+    *         type: string
+    *         in: header
+    *     produces:
+    *       - application/json
+    *     responses:
+    *        200: 
+    *          description: Return email success.
+    */
+    app.get("/emails/:id/tracks",
+    authorizationMiddleware.hasPermission(["view_email"]),
+    getUserAuthenticatedMiddleware,
+    emailEndpoint.getActionsTrackedByEmailId);
+
     /**
     * @swagger
     * /emails:
@@ -420,6 +454,58 @@ export default (app: Express) => {
         authorizationMiddleware.hasPermission(["publish_newsletter"]),
         getUserAuthenticatedMiddleware,
         newsletterEndpoint.publish);
+
+     /**
+    * @swagger
+    * /reset-passwords:
+    *   post:
+    *     tags:
+    *       - Reset password
+    *     summary: Create reset password link
+    *     parameters:
+    *       - name: body
+    *         required: true
+    *         type: object
+    *         schema: 
+    *           $ref: "#/definitions/ResetPassword"
+    *         in: body
+    *     produces:
+    *       - application/json
+    *     responses:
+    *        201: 
+    *          description: Create reset password link.
+    *        400:
+    *          description: Datas invalids.
+    */
+    app.post(
+        "/reset-passwords",
+        resetPasswordEndpoint.create
+    );
+
+     /**
+    * @swagger
+    * /reset-passwords/{token}:
+    *   get:
+    *     tags:
+    *       - Reset password
+    *     summary: Check reset password link is valid
+    *     parameters:
+    *       - name: token
+    *         required: true
+    *         type: string
+    *         in: path
+    *     produces:
+    *       - application/json
+    *     responses:
+    *        200: 
+    *          description: Create reset password link.
+    *        409:
+    *          description: Reset password link invalid.
+    */
+   app.get(
+    "/reset-passwords/:token",
+    resetPasswordEndpoint.isTokenNotExpired
+);
 
     // Handler exceptions in application.
     app.use(handlerExceptionMiddleware);

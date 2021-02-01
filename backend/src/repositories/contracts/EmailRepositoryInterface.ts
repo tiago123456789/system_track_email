@@ -11,4 +11,5 @@ export default interface EmailRepositoryInterface {
 
     getAllByUserId(userId: Number): Promise<any>;
 
+    getActionsTrackByEmailId(emailId: Number): Promise<any>;
 }

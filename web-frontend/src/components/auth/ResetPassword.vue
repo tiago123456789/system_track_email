@@ -7,14 +7,20 @@
       >
         <img
           class="mb-4"
-          src="./../../assets/logo.png"
+          src="./../../assets/img/logo.png"
           alt=""
           width="72"
           height="72"
         />
         <h1 class="h3 mb-3 font-weight-normal">Reset password</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input
+
+        <div class="form-group text-left" v-if="ischangePassword">
+          <label for="">Password:</label>
+          <input type="text" class="form-control">
+        </div>
+
+        <label for="inputEmail" class="sr-only" v-if="!ischangePassword">Email address</label>
+        <input v-if="!ischangePassword"
           v-model="email"
           type="email"
           id="inputEmail"
@@ -23,7 +29,7 @@
           required=""
           autofocus=""
         />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
+        <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="isInvalidLink">
           Reset
         </button>
       </form>
@@ -33,28 +39,60 @@
 </template>
 
 <script>
-import authService from "../../services/AuthService";
+import UserService from "../../services/UserService";
 import ERROR_MESSAGES from "../../constants/ErrorMessage";
+
+const userService = new UserService();
 
 export default {
   name: "ResetPassword",
   data() {
     return {
       email: "",
+      ischangePassword: false,
+      isInvalidLink: false
     };
   },
+
+  async mounted() {
+    const token = this.$route.query.token;
+    if (token) {
+      this.ischangePassword = true;
+      await this.isTokenValid(token);
+    }
+  },
+
   methods: {
     cleanDatas() {
       this.email = "";
     },
-    async resetPassword() {
+
+    async isTokenValid(token) {
       try {
-        await authService.resetPassword(this.email);
-        this.$toastr.s("Link reset password sended success! Check your email.");
+        await userService.checkResetPasswordLink(token);
+      } catch(error) {
+        const message = error.response.data.message;
+        this.$toastr.e(message);
+        this.isInvalidLink = true
+      }
+    },
+
+    async generateResetPasswordLink() {
+      try {
+        await userService.resetPassword(this.email);
+        this.$toastr.s("Reset password link sended success! Check your email.");
       } catch (error) {
         this.$toastr.e(ERROR_MESSAGES[error.code]);
       } finally {
         this.cleanDatas();
+      }
+    },
+
+    async resetPassword() {
+      if (this.ischangePassword) {
+        // 
+      } else {
+        this.generateResetPasswordLink();
       }
     },
   },

@@ -18,6 +18,9 @@
           style="max-width: 200rem"
           class="mb-2"
         >
+          <div class="col-md-12 mb-2" style="margin-left: -15px;">
+            <button class="btn btn-primary" @click="showMoreDetails(email.id)">More details</button>
+          </div>
           <b-card-text
             v-html="email.body"
             style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 10px"
@@ -46,6 +49,12 @@ export default {
       newEmailRoute: ROUTES.NEW_EMAIL,
       emails: [],
     };
+  },
+
+  methods: {
+    showMoreDetails(id) {
+      this.$router.push( { path: `/dashboard/emails/${id}/actions-tracked` });
+    }
   },
 
   async mounted() {

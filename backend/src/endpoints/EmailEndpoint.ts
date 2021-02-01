@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response }  from "express";
+import { NextFunction, Request, Response } from "express";
 import EmailValidation from "./validations/EmailValidation";
 import EmailService from "../services/EmailService";
 import Email from "../models/Email";
@@ -17,11 +17,23 @@ export default class EmailEndpoint {
         this.trackClick = this.trackClick.bind(this);
         this.trackOpen = this.trackOpen.bind(this);
         this.getAllByUserId = this.getAllByUserId.bind(this);
+        this.getActionsTrackedByEmailId = this.getActionsTrackedByEmailId.bind(this);
+    }
+
+    public async getActionsTrackedByEmailId(request: Request, response: Response, next: NextFunction) {
+        try {
+            const id = request.params.id;
+            // @ts-ignore
+            const actionsTracked = await this.emailService.getActionsTrackByEmailId(id);
+            response.json(actionsTracked);
+        } catch (error) {
+            next(error);
+        }
     }
 
     public async trackClick(request: Request, response: Response, next: NextFunction) {
         try {
-            const { link, id, to, userId } : any = request.query;
+            const { link, id, to, userId }: any = request.query;
             const trackActionEmail: TrackActionEmail = new TrackActionEmail(
                 id, to, "click", link
             );
@@ -34,14 +46,14 @@ export default class EmailEndpoint {
                 }
             });
             response.redirect(link);
-        } catch(error) {
+        } catch (error) {
             next(error);
         }
     }
 
     public async trackOpen(request: Request, response: Response, next: NextFunction) {
         try {
-            const { id, to, userId } : any = request.query;
+            const { id, to, userId }: any = request.query;
             const trackActionEmail: TrackActionEmail = new TrackActionEmail(
                 id, to, "click", null
             );
@@ -56,7 +68,7 @@ export default class EmailEndpoint {
             let buf = new Buffer(30);
             response.writeHead(200, { 'Content-Type': 'image/gif' });
             return response.end(buf, 'binary');
-        } catch(error) {
+        } catch (error) {
             next(error);
         }
     }
@@ -74,7 +86,7 @@ export default class EmailEndpoint {
             );
             await this.emailService.create(newEmail);
             response.sendStatus(201);
-        } catch(error) {
+        } catch (error) {
             next(error);
         }
     }
@@ -84,7 +96,7 @@ export default class EmailEndpoint {
             // @ts-ignore
             const emails = await this.emailService.getAllByUserId(request.userId);
             response.json(emails);
-        } catch(error) {
+        } catch (error) {
             next(error);
         }
     }

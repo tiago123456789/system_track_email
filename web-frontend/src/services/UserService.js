@@ -12,4 +12,12 @@ export default class UserService extends AbstractHttpService {
         return this.post(`users`, user, this._authService.getAccessToken());
     }
 
+    resetPassword(email) {
+        return this.post(`reset-passwords`, {email}, this._authService.getAccessToken());
+    }
+
+    checkResetPasswordLink(token) {
+        return this.get(`reset-passwords/${token}`, this._authService.getAccessToken());
+    }
+
 }

@@ -1,11 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Login from "./components/auth/Login.vue";
+import ResetPassword from "./components/auth/ResetPassword";
 import Dashboard from "./components/dashboard/Dashboard";
 import ListUser from "./components/user/ListUser";
 import ListPermission from "./components/permissions/ListPermission";
 import ListEmail from "./components/email/ListEmail";
 import NewEmail from "./components/email/NewEmail";
+import ListActionTracked from "./components/email/ListActionTracked";
+
 import NewPermission from "./components/permissions/NewPermission";
 import ListNewsletter from "./components/newsletter/ListNewsletter"
 
@@ -20,8 +23,10 @@ Vue.use(VueRouter);
 const routes = new VueRouter({
     routes: [
         { path: ROUTES.LOGIN, component: Login },
+        { path: ROUTES.RESET, component: ResetPassword },
         { path: ROUTES.EMAILS, component: ListEmail },
         { path: ROUTES.NEW_EMAIL, component: NewEmail },
+        { path: ROUTES.EMAIL_ACTIONS_TRACKED, component: ListActionTracked },
         { path: ROUTES.NEWSLETTER_PUBLISH, component: NewEmail },
         { path: ROUTES.NEWSLETTERS, component: ListNewsletter },
         { path: ROUTES.PERMISSIONS, component: ListPermission },

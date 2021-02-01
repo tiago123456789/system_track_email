@@ -5,6 +5,10 @@ import EmailRepositoryInterface from "./contracts/EmailRepositoryInterface";
 
 export default class EmailRepository implements EmailRepositoryInterface {
 
+    getActionsTrackByEmailId(emailId: Number): Promise<any> {
+        return connection("actions_tracked").where("email_id", emailId).select();
+    }
+
     getAllByUserId(userId: Number): Promise<any> {
         return connection("emails").where("user_id", userId).select();
     }

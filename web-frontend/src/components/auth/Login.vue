@@ -32,6 +32,9 @@
           placeholder="Password"
           required=""
         />
+        <router-link :to="resetPasswordRoute" class="float-left">
+          No remember password?
+        </router-link>
         <button class="btn btn-lg btn-primary btn-block" type="submit">
           Sign in
         </button>
@@ -53,6 +56,7 @@ export default {
   name: "Login",
   data() {
     return {
+      resetPasswordRoute: ROUTES.RESET,
       username: "",
       password: "",
     };

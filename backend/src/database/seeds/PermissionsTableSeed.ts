@@ -15,7 +15,15 @@ export async function seed(knex: Knex): Promise<void> {
         { name: "create_permission" },
         { name: "add_permission_user" },
         { name: "create_newsletter" },
-        { name: "publish_newsletter" }
+        { name: "publish_newsletter" },
+        { name: "view_user" },
+        { name: "view_email" },
+        { name: "view_email_new" },
+        { name: "view_newsletter" },
+        { name: "view_permission" },
+        { name: "view_permission" },
+        { name: "view_dashboard" },
+        { name: "view_newsletter_publish" }
     ]);
 
 };

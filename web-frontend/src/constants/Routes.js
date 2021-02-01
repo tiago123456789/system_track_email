@@ -1,8 +1,10 @@
 export default ({
     LOGIN: "/login",
+    RESET: "/reset-password",
     USERS: "/dashboard/users",
     EMAILS: "/dashboard/emails",
     NEW_EMAIL: "/dashboard/emails/new",
+    EMAIL_ACTIONS_TRACKED: "/dashboard/emails/:id/actions-tracked",
     NEWSLETTERS: "/dashboard/newsletter",
     NEWSLETTER_PUBLISH: "/dashboard/newsletter/:id/publish",
     PERMISSIONS: "/dashboard/permissions",

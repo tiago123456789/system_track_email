@@ -22,6 +22,10 @@ export default class EmailService {
         return this.repository.getAllByUserId(userId);
     }
 
+    getActionsTrackByEmailId(emailId: Number): Promise<any> {
+        return this.repository.getActionsTrackByEmailId(emailId);
+    }
+
     trackClick(trackActionEmail: TrackActionEmail): Promise<any> {
         return this.repository.trackClick(trackActionEmail);
     }

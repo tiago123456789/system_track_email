@@ -15,4 +15,8 @@ export default class Email extends AbstractHttpService {
     getAll() {
         return this.get(`emails`, this._authService.getAccessToken()); 
     }
+
+    getActionsTracked(emailId) {
+        return this.get(`emails/${emailId}/tracks`, this._authService.getAccessToken()); 
+    }
 }
