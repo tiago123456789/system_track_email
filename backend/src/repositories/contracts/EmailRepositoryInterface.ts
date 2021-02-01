@@ -9,5 +9,6 @@ export default interface EmailRepositoryInterface {
 
     trackOpen(trackActionEmail: TrackActionEmail): Promise<any>;
 
+    getAllByUserId(userId: Number): Promise<any>;
 
 }

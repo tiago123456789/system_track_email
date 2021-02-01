@@ -18,6 +18,9 @@ export default class EmailService {
         private readonly producer: ProducerInterface
     ) { }
 
+    getAllByUserId(userId: Number): Promise<any> {
+        return this.repository.getAllByUserId(userId);
+    }
 
     trackClick(trackActionEmail: TrackActionEmail): Promise<any> {
         return this.repository.trackClick(trackActionEmail);

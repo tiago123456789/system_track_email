@@ -265,6 +265,29 @@ export default (app: Express) => {
         getUserAuthenticatedMiddleware,
         emailEndpoint.create);
 
+     /**
+    * @swagger
+    * /emails:
+    *   get:
+    *     tags:
+    *       - Email
+    *     summary: Get user's emails.
+    *     parameters:
+    *       - name: authorization
+    *         required: true
+    *         type: string
+    *         in: header
+    *     produces:
+    *       - application/json
+    *     responses:
+    *        200: 
+    *          description: Execute with success.
+    */
+   app.get("/emails",
+   authorizationMiddleware.hasPermission(["view_email"]),
+   getUserAuthenticatedMiddleware,
+   emailEndpoint.getAllByUserId);
+
     /**
      * @swagger
      * /newsletters:

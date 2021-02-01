@@ -1,20 +1,22 @@
 <template>
-    <div v-if="hasPermission">
+    <div v-if="hasPermission" class="col-md-12">
       <slot></slot>
     </div>
 </template>
 
 <script>
+import AuthService from "../../services/AuthService";
+
+const authService = new AuthService();
 
 export default {
   name: "Authorizator",
   props: {
-    permissionToRender: String,
-    permission: String
+    permissionToRender: Array,
   },
   computed: {
     hasPermission() {
-      return this.permissionToRender == this.permission;
+      return authService.hasPermissions(this.permissionToRender);
     }
   }
 };

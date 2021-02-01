@@ -11,4 +11,8 @@ export default class Email extends AbstractHttpService {
     send(email) {
         return this.post(`emails`, email, this._authService.getAccessToken());
     }
+
+    getAll() {
+        return this.get(`emails`, this._authService.getAccessToken()); 
+    }
 }

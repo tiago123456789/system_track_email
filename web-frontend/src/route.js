@@ -39,13 +39,8 @@ routes.beforeEach((to, from, next) => {
         return;
     }
 
-    const isAccessUsingLinkAccess = /\/dashboard\/todos\/([a-zA-z-09-]){1,}/.test(to.path);
-    if (isAccessUsingLinkAccess) {
-        next();
-        return;
-    }
-
-    if (authService.isAuthenticated()) {
+    const permissions = ROUTES.ROUTE_PERMISSIONS[to.path] ? [ROUTES.ROUTE_PERMISSIONS[to.path]] : [];
+    if (authService.isAuthenticated() && authService.hasPermissions(permissions)) {
         next();
         return;
     }

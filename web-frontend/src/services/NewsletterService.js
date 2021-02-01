@@ -15,4 +15,8 @@ export default class NewsletterService extends AbstractHttpService {
     create(name) {
         return this.post(`newsletters`, { name }, this._authService.getAccessToken());
     }
+
+    publish(id, newsletter) {
+        return this.post(`publishtions/newsletters/${id}`, newsletter, this._authService.getAccessToken());
+    }
 }

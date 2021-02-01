@@ -9,10 +9,12 @@
       <div class="sidebar-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item" v-for="(item, indice) of items" :key="indice">
-            <router-link v-bind:to="item.route" class="nav-link active">
-              <span data-feather="home"></span>
-              {{item.name}} <span class="sr-only"></span>
-            </router-link>
+            <authorizator :permissionToRender="[item.permission]">
+                <router-link v-bind:to="item.route" class="nav-link active">
+                  <span data-feather="home"></span>
+                  {{item.name}} <span class="sr-only"></span>
+                </router-link>
+            </authorizator>
           </li>
         </ul>
       </div>
@@ -34,11 +36,13 @@
 import "@/assets/css/dashboard.css";
 import Header from "./Header";
 import MENU from "./../../constants/Menu";
+import Authorizator from '../auth/Authorizator.vue';
 
 export default {
   name: "Dashboard",
   components: {
-    Header
+    Header,
+    Authorizator
   },
   data() {
     return {

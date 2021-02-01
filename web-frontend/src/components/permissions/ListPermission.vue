@@ -1,9 +1,12 @@
 <template>
   <Dashboard title="Permissions">
     <div class="row">
-      <router-link :to="newPermission">
-        <b-button variant="primary" class="ml-2 mb-2">+ New</b-button>
-      </router-link>
+      <authorizator :permissionToRender="['create_permission']">
+          <router-link :to="newPermission">
+            <b-button variant="primary" class="ml-2 mb-2">+ New</b-button>
+          </router-link>
+      </authorizator>
+    
       <b-table striped hover class="text-center" :items="items"></b-table>
     </div>
   </Dashboard>
@@ -19,14 +22,12 @@ const permissionService = new PermissionService();
 export default {
   name: "ListPermission",
   components: {
-    Dashboard,
+    Dashboard
   },
   data() {
     return {
       newPermission: ROUTES.NEW_PERMISSION,
-      items: [
-        
-        ]
+      items: []
     };
   },
 

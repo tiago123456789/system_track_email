@@ -16,6 +16,7 @@ export default class EmailEndpoint {
         this.create = this.create.bind(this);
         this.trackClick = this.trackClick.bind(this);
         this.trackOpen = this.trackOpen.bind(this);
+        this.getAllByUserId = this.getAllByUserId.bind(this);
     }
 
     public async trackClick(request: Request, response: Response, next: NextFunction) {
@@ -73,6 +74,16 @@ export default class EmailEndpoint {
             );
             await this.emailService.create(newEmail);
             response.sendStatus(201);
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    public async getAllByUserId(request: Request, response: Response, next: NextFunction) {
+        try {
+            // @ts-ignore
+            const emails = await this.emailService.getAllByUserId(request.userId);
+            response.json(emails);
         } catch(error) {
             next(error);
         }
