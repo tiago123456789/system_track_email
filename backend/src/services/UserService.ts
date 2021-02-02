@@ -72,7 +72,6 @@ export default class UserService {
         }
         
         delete user.password;
-        delete user.token;
         return user;
     }
 

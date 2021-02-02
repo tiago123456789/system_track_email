@@ -9,7 +9,7 @@ class UserRepository implements UserRepositoryInterface {
     }
 
     findAll(): Promise<any> {
-        return connection("users").select(["id", "username", "email"]);
+        return connection("users").select(["id", "username", "email", "token"]);
     }
 
     update(id: Number, datas: { [key: string]: any}): Promise<any> {

@@ -39,8 +39,6 @@ export default (app: Express) => {
    *    properties:
    *      subject: 
    *          type: string
-   *      from:
-   *          type: string
    *      to: 
    *          type: string
    *      body:
@@ -64,8 +62,6 @@ export default (app: Express) => {
    *  PublishNewsletter:
    *      properties:
    *           subject: 
-   *              type: string
-   *           from: 
    *              type: string
    *           body:
    *              type: string

@@ -6,10 +6,6 @@
           <label for="">Assunto:</label>
           <input type="text" v-model="newEmail.subject" class="form-control" />
         </div>
-        <div class="form-group">
-          <label for="">Remetente:</label>
-          <input type="email" v-model="newEmail.from" class="form-control" />
-        </div>
         <div class="form-group" v-if="!isFormToPublishNewsletter">
           <label for="">Destinatário:</label>
           <input type="email" v-model="newEmail.to" class="form-control" />

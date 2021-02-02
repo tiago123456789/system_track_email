@@ -79,7 +79,8 @@ export default class EmailEndpoint {
             let newEmail: Email = request.body;
             EmailValidation.validate(newEmail);
             newEmail = new Email(
-                newEmail.subject, newEmail.from,
+                // @ts-ignore
+                newEmail.subject, request.email,
                 newEmail.to, newEmail.body,
                 // @ts-ignore
                 request.userId

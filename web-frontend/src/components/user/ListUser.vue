@@ -13,6 +13,7 @@
               <th>Id</th>
               <th>Username</th>
               <th>Email</th>
+              <th>Token</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -21,6 +22,7 @@
               <td>{{ user.id }}</td>
               <td>{{ user.username }}</td>
               <td>{{ user.email }}</td>
+              <td>{{ user.token }}</td>
               <td>
                 <button class="btn btn-warning" @click="redirectFormEdition(user.id)">Edit</button>
               </td>

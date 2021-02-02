@@ -27,6 +27,8 @@ export default class NewsletterEndpoint {
             EmailNewsletterValidation.validate(emailNewsletter);
             // @ts-ignore
             emailNewsletter.userId = request.userId
+            // @ts-ignore
+            emailNewsletter.from = request.email;
             await this.newsletterService.publish(id, emailNewsletter);
             response.sendStatus(200);
         } catch(error) {

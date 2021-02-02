@@ -9,8 +9,11 @@ export default async (request: Request, response: Response, next: NextFunction) 
     if (accessToken) {
         accessToken = accessToken.replace(CONSTANTES.HEADER_PREFIX_TOKEN_PARAM, "");
         const userId = await token.getValueInPayload("id", accessToken);
+        const email = await token.getValueInPayload("id", accessToken);
         // @ts-ignore
         request.userId = userId;
+        // @ts-ignore
+        request.email = email;
         next();
     } else {
         next();
