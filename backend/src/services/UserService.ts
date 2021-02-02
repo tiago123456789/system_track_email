@@ -18,6 +18,10 @@ export default class UserService {
         return this.repository.findAll();
     }
 
+    async updateWithoutPermission(id: Number, datas: { [key: string]: any}): Promise<any> {
+        return this.repository.update(id, datas);
+    }
+
     async update(id: Number, datas: { [key: string]: any}): Promise<any> {
         await this.findById(id);
         const permissions = datas.permissions;

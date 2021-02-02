@@ -28,7 +28,7 @@ export default class ResetPasswordService {
 
         // @ts-ignore
         const password = await this.encrypter.getHash(datas.password);
-        await this.userService.update(resetPassword.user_id, { password });
+        await this.userService.updateWithoutPermission(resetPassword.user_id, { password });
         return this.repository.delete(resetPassword.id);
     }
 
