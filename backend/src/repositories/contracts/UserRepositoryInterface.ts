@@ -2,6 +2,8 @@ import User from "../../models/User";
 
 interface UserRepositoryInterface {
 
+    findAll(): Promise<any>;
+
     update(id: Number, datas: { [key: string]: any}): Promise<any>;
     
     create(user: User): Promise<any>
@@ -19,6 +21,8 @@ interface UserRepositoryInterface {
     findPermissionsByIds(permissionsIds: Number[]): Promise<any>;
 
     createPermission(permission: string): Promise<any>;
+
+    removeAllUserPermission(userId: Number): Promise<any>;
 }
 
 export default UserRepositoryInterface;

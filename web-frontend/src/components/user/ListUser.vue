@@ -1,94 +1,65 @@
 <template>
   <Dashboard title="Users">
     <div class="row">
-      <form class="col-md-12" @submit.prevent="save()">
-        <div class="form-group">
-          <label for="">Username</label>
-          <input type="text" v-model="newUser.username" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="">Email:</label>
-          <input type="email" v-model="newUser.email" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="">Senha:</label>
-          <input
-            type="password"
-            v-model="newUser.password"
-            class="form-control"
-          />
-        </div>
-        <div class="form-group">
-          <label for="">Permissions:</label>
-          <multiselect
-            v-model="value"
-            :options="options"
-            :multiple="true"
-            :close-on-select="false"
-            :clear-on-select="false"
-            :preserve-search="true"
-            placeholder="Pick some"
-            label="name"
-            track-by="name"
-            :preselect-first="true"
-          >
-          </multiselect>
-        </div>
-        <div class="form-group">
-          <button class="btn btn-primary">Save</button>&nbsp;
-          <button class="btn btn-danger">Cancel</button>
-        </div>
-      </form>
+      <div class="col-md-12">
+        <authorizator :permissionToRender="['create_user']">
+          <router-link :to="newUserRoute" class="btn btn-primary mb-2">+ New</router-link>
+        </authorizator>
+      </div>
+      <div class="col-md-12">
+        <table class="table table-striped table-hover text-center">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="user in users" :key="user.id">
+              <td>{{ user.id }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <button class="btn btn-warning" @click="redirectFormEdition(user.id)">Edit</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </Dashboard>
 </template>
 
 <script>
 import Dashboard from "../template/Dashboard";
-import Multiselect from "vue-multiselect";
 import "../../../node_modules/vue-multiselect/dist/vue-multiselect.min.css";
-
-import PermissionService from "../../services/PermissionService";
 import UserService from "../../services/UserService";
+import ROUTES from '../../constants/Routes';
 
-const permissionService = new PermissionService();
 const userService = new UserService();
 
 export default {
   name: "ListUser",
   components: {
-    Dashboard,
-    Multiselect,
+    Dashboard
   },
   data() {
     return {
-      newUser: { username: "", email: "", password: "" },
-      value: [],
-      options: [],
+      users: [],
+      newUserRoute: ROUTES.USERS
     };
   },
 
-  async beforeMount() {
-    const permissions = await permissionService.getAll();
-    this.options = permissions;
+  async mounted() {
+    this.users = await userService.findAll();
   },
 
   methods: {
-    cleanForm() {
-      this.newUser = { username: "", email: "", password: "" };
-      this.value = [];
-    },
-    async save() {
-      try {
-        const userCreated = await userService.create(this.newUser);
-        const permissions = this.value.map(item => item.id);
-        await permissionService.addPermissionForUser(userCreated.id, permissions);
-        this.$toastr.s("User created success.");
-        this.cleanForm()
-      } catch (error) {
-         const message = error.response.data.message;
-        this.$toastr.e(message);
-      }
+
+    redirectFormEdition(id) {
+      this.$router.push({ path: `/dashboard/users/${id}`})
     },
   },
 };

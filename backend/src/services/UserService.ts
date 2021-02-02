@@ -14,8 +14,16 @@ export default class UserService {
         private readonly uuid: Uuid
     ) {}
 
-    update(id: Number, datas: { [key: string]: any}): Promise<any> {
-        return this.repository.update(id, datas);
+    findAll(): Promise<any> {
+        return this.repository.findAll();
+    }
+
+    async update(id: Number, datas: { [key: string]: any}): Promise<any> {
+        await this.findById(id);
+        const permissions = datas.permissions;
+        await this.repository.update(id, { email: datas.email, username: datas.username });
+        await this.repository.removeAllUserPermission(id);
+        return this.addPermissions(id, permissions);
     }
 
     findPermissionsByUserId(userId: Number): Promise<any> {
@@ -62,7 +70,9 @@ export default class UserService {
         if (!user) {
             throw new NotFoundException("User not found!");
         }
-
+        
+        delete user.password;
+        delete user.token;
         return user;
     }
 

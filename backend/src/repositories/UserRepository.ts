@@ -4,6 +4,14 @@ import connection from "../config/Database"
 
 class UserRepository implements UserRepositoryInterface {
 
+    removeAllUserPermission(userId: Number): Promise<any> {
+        return connection("users_permissions").where("user_id", userId).del()
+    }
+
+    findAll(): Promise<any> {
+        return connection("users").select(["id", "username", "email"]);
+    }
+
     update(id: Number, datas: { [key: string]: any}): Promise<any> {
         return connection("users").where("id", id).update(datas);
     }

@@ -9,7 +9,7 @@ export default ({
         },
         {
             name: "Users",
-            route: ROUTES.USERS,
+            route: ROUTES.LIST_USER,
             permission: "view_user"
         },
         {

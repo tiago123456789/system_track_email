@@ -4,6 +4,7 @@ import UserValidation from "./validations/UserValidation";
 import addPermissionValidation from "./validations/AddPermissionValidation";
 import PermissionValidation from "./validations/PermissionValidation";
 import AddPermissionValidation from "./validations/AddPermissionValidation";
+import UpdateUserValidation from "./validations/UpdateUserValidation";
 
 export default class UserEndpoint {
 
@@ -14,6 +15,29 @@ export default class UserEndpoint {
         this.getPermissions = this.getPermissions.bind(this);
         this.createPermission = this.createPermission.bind(this);
         this.addPermissionsForUser = this.addPermissionsForUser.bind(this);
+        this.findAll = this.findAll.bind(this);
+        this.findById = this.findById.bind(this);
+        this.update = this.update.bind(this);
+    }
+
+    public async findAll(request: Request, response: Response, next: NextFunction) { 
+        try {
+            const users = await this.userService.findAll();
+            response.json(users);
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    public async findById(request: Request, response: Response, next: NextFunction) { 
+        try {
+            const id = request.params.id;
+            // @ts-ignore
+            const users = await this.userService.findById(id);
+            response.json(users);
+        } catch(error) {
+            next(error);
+        }
     }
 
     public async getPermissions(request: Request, response: Response, next: NextFunction) { 
@@ -56,6 +80,20 @@ export default class UserEndpoint {
             const userCreated = await this.userService.create(newUser);
             delete userCreated.password;
             response.status(201).json(userCreated);
+        } catch(error) {
+            next(error);
+        }
+    }
+
+
+    public async update(request: Request, response: Response, next: NextFunction) {
+        try {
+            const id = request.params.id;
+            const datasModified = request.body;
+            UpdateUserValidation.validate(datasModified);
+            // @ts-ignore
+            await this.userService.update(id, datasModified);
+            response.sendStatus(204);
         } catch(error) {
             next(error);
         }
