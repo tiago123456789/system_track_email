@@ -6,4 +6,6 @@ export default interface ResetPasswordInterface {
     create(resetPassword: ResetPassword): Promise<any>;
     
     findByToken(token: string): Promise<any>;
+
+    delete(id: Number): Promise<any>;
 }

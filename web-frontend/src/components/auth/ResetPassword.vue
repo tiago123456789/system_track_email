@@ -16,7 +16,7 @@
 
         <div class="form-group text-left" v-if="ischangePassword">
           <label for="">Password:</label>
-          <input type="text" class="form-control">
+          <input type="password" v-model="password" class="form-control">
         </div>
 
         <label for="inputEmail" class="sr-only" v-if="!ischangePassword">Email address</label>
@@ -40,6 +40,7 @@
 
 <script>
 import UserService from "../../services/UserService";
+import ROUTES from "../../constants/Routes";
 import ERROR_MESSAGES from "../../constants/ErrorMessage";
 
 const userService = new UserService();
@@ -49,6 +50,7 @@ export default {
   data() {
     return {
       email: "",
+      password: "",
       ischangePassword: false,
       isInvalidLink: false
     };
@@ -88,9 +90,21 @@ export default {
       }
     },
 
+    async updatePasswordUsingResetPasswordLink() {
+       try {
+        await userService.updatePasswordByResetLink(this.$route.query.token, { password: this.password });
+        this.$toastr.s("Password updated success.");
+        this.$router.push({ path: ROUTES.LOGIN });
+      } catch (error) {
+        this.$toastr.e(ERROR_MESSAGES[error.code]);
+      } finally {
+        this.cleanDatas();
+      }
+    },
+
     async resetPassword() {
       if (this.ischangePassword) {
-        // 
+        this.updatePasswordUsingResetPasswordLink();
       } else {
         this.generateResetPasswordLink();
       }

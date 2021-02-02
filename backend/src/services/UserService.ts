@@ -14,6 +14,10 @@ export default class UserService {
         private readonly uuid: Uuid
     ) {}
 
+    update(id: Number, datas: { [key: string]: any}): Promise<any> {
+        return this.repository.update(id, datas);
+    }
+
     findPermissionsByUserId(userId: Number): Promise<any> {
         return this.repository.findPermissionsByUserId(userId);
     }

@@ -4,6 +4,9 @@ import connection from "../config/Database"
 
 class UserRepository implements UserRepositoryInterface {
 
+    update(id: Number, datas: { [key: string]: any}): Promise<any> {
+        return connection("users").where("id", id).update(datas);
+    }
 
     async findPermissionsByIds(permissionsIds: Number[]): Promise<any> {
         const register = await connection("permissions").whereIn("id", permissionsIds).count("id as count");

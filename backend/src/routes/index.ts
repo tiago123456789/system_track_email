@@ -18,6 +18,11 @@ export default (app: Express) => {
     /**
    * @swagger
    * definitions:
+   *  ResetPasswordUpdate:
+   *    properties:
+   *        password: 
+   *            type: string
+   * 
    *  ResetPassword:
    *    properties:
    *        email:
@@ -505,7 +510,39 @@ export default (app: Express) => {
    app.get(
     "/reset-passwords/:token",
     resetPasswordEndpoint.isTokenNotExpired
-);
+   );
+
+      /**
+    * @swagger
+    * /reset-passwords/{token}:
+    *   put:
+    *     tags:
+    *       - Reset password
+    *     summary:  Update password of user.
+    *     parameters:
+    *       - name: token
+    *         required: true
+    *         type: string
+    *         in: path
+    *       - name: body
+    *         required: true
+    *         type: object
+    *         schema: 
+    *           $ref: "#/definitions/ResetPasswordUpdate"
+    *         in: body
+    *     produces:
+    *       - application/json
+    *     responses:
+    *        204: 
+    *          description: Update password success.
+    *        409:
+    *          description: Reset password link invalid.
+    */
+   app.put(
+    "/reset-passwords/:token",
+    resetPasswordEndpoint.updatePasswordByToken
+   );
+
 
     // Handler exceptions in application.
     app.use(handlerExceptionMiddleware);

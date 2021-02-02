@@ -10,6 +10,18 @@ export default class ResetPasswordEndpoint {
     ) {
         this.create = this.create.bind(this);
         this.isTokenNotExpired = this.isTokenNotExpired.bind(this);
+        this.updatePasswordByToken = this.updatePasswordByToken.bind(this);
+    }
+
+    async updatePasswordByToken(request: Request, response: Response, next: NextFunction) {
+        try {
+            const token = request.params.token;
+            const dataModified = request.body;
+            await this.resetPasswordService.updatePasswordByToken(token, dataModified);
+            response.sendStatus(204);
+        } catch(error) {
+            next(error);
+        }
     }
 
     async create(request: Request, response: Response, next: NextFunction) {

@@ -5,6 +5,7 @@ import EmailFactory from "./EmailFactory";
 import ResetPasswordRepositoryFactory from "./ResetPasswordRepositoryFactory";
 import Uuid from "../utils/Uuid";
 import UserServiceFactory from "./UserServiceFactory";
+import Encrypter from "../utils/Encrypter";
 
 export default class ResetPasswordServiceFactory implements FactoryInterface<ResetPasswordService> {
 
@@ -14,7 +15,8 @@ export default class ResetPasswordServiceFactory implements FactoryInterface<Res
             new UserServiceFactory().make({}),
             logger,
             new Uuid(),
-            new EmailFactory().make({})
+            new EmailFactory().make({}),
+            new Encrypter()
         )
     }
 

@@ -26,6 +26,14 @@ export default class AbstractHttpService {
         }).then(this._extractDatas);
     }
 
+    put(path, datas, accessToken) {
+        return axios.put(`${process.env.VUE_APP_API_URL}${path}`,  datas,  { 
+            headers: {
+                [Constants.HEADERS.AUTHORIZATION]: accessToken
+            }
+        });
+    }
+
     _extractDatas(response) {
         if (response.data) {
             return response.data;

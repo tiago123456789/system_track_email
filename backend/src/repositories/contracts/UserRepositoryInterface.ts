@@ -2,6 +2,8 @@ import User from "../../models/User";
 
 interface UserRepositoryInterface {
 
+    update(id: Number, datas: { [key: string]: any}): Promise<any>;
+    
     create(user: User): Promise<any>
 
     findByEmail(email: string): Promise<any>;

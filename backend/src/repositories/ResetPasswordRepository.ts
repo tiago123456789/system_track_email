@@ -17,4 +17,8 @@ export default class ResetPasswordRepository implements ResetPasswordInterface {
         return register[0] || null;
     }
 
+    delete(id: Number): Promise<any> {
+        return connection("reset_passwords").where("id", id).del();
+    }
+
 }

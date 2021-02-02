@@ -5,6 +5,7 @@ import CodeMessageException from "../exceptions/CodeMessageException";
 import ResetPassword from "../models/ResetPassword";
 import ResetPasswordInterface from "../repositories/contracts/ResetPasswordInterface";
 import Uuid from "../utils/Uuid";
+import Encrypter from "../utils/Encrypter";
 import UserService from "./UserService";
 
 export default class ResetPasswordService {
@@ -14,8 +15,21 @@ export default class ResetPasswordService {
         private readonly userService: UserService,
         private readonly logger: winston.Logger,
         private readonly uuid: Uuid,
-        private readonly email: EmailInterface
+        private readonly email: EmailInterface,
+        private readonly encrypter: Encrypter
     ) { 
+    }
+
+    async updatePasswordByToken(token: string, datas: string): Promise<any> {
+        const resetPassword = await this.repository.findByToken(token);
+        if (!resetPassword) {
+            throw new BusinessLogicException(CodeMessageException.RESET_LINK_INVALID);
+        }
+
+        // @ts-ignore
+        const password = await this.encrypter.getHash(datas.password);
+        await this.userService.update(resetPassword.user_id, { password });
+        return this.repository.delete(resetPassword.id);
     }
 
     async create(resetPassword: ResetPassword) {
