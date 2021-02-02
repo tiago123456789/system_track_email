@@ -64,7 +64,9 @@ export default {
   mounted() {
     if (authService.isAuthenticated()) {
       this.$router.push({ path: ROUTES.DASHBOARD })
+      return;
     }
+    authService.logout();
   },
   methods: {
     cleanDatas() {

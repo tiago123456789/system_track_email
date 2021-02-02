@@ -1,5 +1,6 @@
 import AbstractHttpService from "./AbstractHttpService";
 import Constants from "../constants/App";
+import TokenUtil from "../utils/TokenUtil";9
 
 export default class AuthService extends AbstractHttpService {
 
@@ -19,9 +20,8 @@ export default class AuthService extends AbstractHttpService {
         if (!token) {
             return false;
         }
-        let payload = token.split(".")[1];
-        payload = JSON.parse(atob(payload));
-        const permissions = payload["permissions"] || [];
+
+        const permissions = TokenUtil.getValueInPayloud("permissions", token) || [];
         const userPermissions = permissionsNeeded
                                     .filter(item => permissions.indexOf(item) > -1);
         return userPermissions.length == permissionsNeeded.length;
@@ -32,7 +32,12 @@ export default class AuthService extends AbstractHttpService {
     }
 
     isAuthenticated() {
-        return localStorage.getItem(Constants.LOCALSTORAGE.ACCESS_TOKEN) != null;
+        const token = localStorage.getItem(Constants.LOCALSTORAGE.ACCESS_TOKEN);
+        if (!token || TokenUtil.isExpirated(token)) {
+            return false
+        }
+
+        return true;
     }
 
     getAccessToken() {

@@ -2,6 +2,28 @@ version: "3"
 
 services:
 
+  app: 
+    build: ./
+    restart: always
+    env_file: 
+      - .env
+    ports:
+      - 3001:3001
+    environment:
+      SWAGGER_PATH_ROUTES: "./build/routes/*.js"
+    command: "npm run start"
+    container_name: system_track_email_back
+    network_mode: host
+
+  consumer_email_notification: 
+    build: ./
+    restart: always
+    env_file: 
+      - .env
+    command: "npm run jobs"
+    container_name: system_track_email_consumer_email_notification
+    network_mode: host
+
   database:
     image: mysql:5.7
     container_name: database
@@ -12,5 +34,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: root
       MYSQL_DATABASE: system_track_email
+    network_mode: host
 
-      
+networks:
+  
+  default:
+    driver: bridge

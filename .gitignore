@@ -10,5 +10,6 @@ jspm_packages
 
 
 /backend/.env
+/backend/build
 /web-frontend/.env
 /extension-frontend/.env

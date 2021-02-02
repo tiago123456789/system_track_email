@@ -87,129 +87,25 @@ export default (app: Express) => {
    *                type: integer
    *         
    */
-
-    /**
-    * @swagger
-    * /users:
-    *   post:
-    *     tags:
-    *       - User
-    *     summary: Create new user
-    *     parameters:
-    *       - name: body
-    *         required: true
-    *         type: object
-    *         schema: 
-    *           $ref: "#/definitions/User"
-    *         in: body
-    *       - name: Authorization
-    *         required: true
-    *         type: string
-    *         in: header
-    *     produces:
-    *       - application/json
-    *     responses:
-    *        200: 
-    *          description: Operation executed success.
-    *        400:
-    *          description: Datas invalids.
-    *        409:
-    *          description: User's emails can't used.
-    */
     app.post("/users",
         authorizationMiddleware.hasPermission(["create_user"]),
         getUserAuthenticatedMiddleware,
         userEndpoint.create
     );
 
-    /**
-  * @swagger
-  * /users/permissions:
-  *   get:
-  *     tags:
-  *       - User
-  *     summary: Get permissions availibily
-  *     parameters:
-  *       - name: authorization
-  *         required: true
-  *         type: string
-  *         in: header
-  *     produces:
-  *       - application/json
-  *     responses:
-  *        200: 
-  *          description: Operation executed success.
-  */
     app.get("/users/permissions",
         authorizationMiddleware.hasPermission(["list_permission"]),
         getUserAuthenticatedMiddleware,
         userEndpoint.getPermissions
     );
 
-    /**
- * @swagger
- * /users/permissions:
- *   post:
- *     tags:
- *       - User
- *     summary: Create new permissions
- *     parameters:
- *       - name: body
- *         required: true
- *         type: object
- *         schema: 
- *           $ref: "#/definitions/Permission"
- *         in: body
- *       - name: authorization
- *         required: true
- *         type: string
- *         in: header
- *     produces:
- *       - application/json
- *     responses:
- *        200: 
- *          description: Operation executed success.
- *        400:
- *          description: Datas invalids.
- */
+ 
     app.post("/users/permissions",
         authorizationMiddleware.hasPermission(["create_permission"]),
         getUserAuthenticatedMiddleware,
         userEndpoint.createPermission
     );
 
-    /**
-* @swagger
-* /users/{id}/permissions:
-*   post:
-*     tags:
-*       - User
-*     summary: Add permissions to user
-*     parameters:
-*       - name: id
-*         required: true
-*         type: string
-*         in: path
-*       - name: body
-*         required: true
-*         type: object
-*         schema: 
-*           $ref: "#/definitions/AddPermissionUser"
-*         in: body
-*       - name: authorization
-*         required: true
-*         type: string
-*         in: header
-*     produces:
-*       - application/json
-*     responses:
-*        200: 
-*          description: Operation executed success.
-*        400:
-*          description: Datas invalids.
-*        404:
-*          description: Not found users ou not found permission.
-*/
     app.post("/users/:id/permissions",
         authorizationMiddleware.hasPermission(["add_permission_user"]),
         getUserAuthenticatedMiddleware,
