@@ -6,6 +6,7 @@ export default class Email {
         public to: string | null,
         public body: string,
         public userId: Number,
-        public id? : Number
+        public id? : Number,
+        public scheduledAt? : Date
     ) {}
 }

@@ -2,6 +2,10 @@
   <Dashboard title="New email">
     <div class="row">
       <form class="col-md-12" @submit.prevent="save()">
+         <div class="form-group">
+          <label for="">Schedule send email for<span class="text-bold">(Only use this field case need schedule send the email)</span></label>
+          <input type="datetime-local" v-model="newEmail.scheduledAt" class="form-control" />
+        </div>
         <div class="form-group">
           <label for="">Assunto:</label>
           <input type="text" v-model="newEmail.subject" class="form-control" />
@@ -51,6 +55,7 @@ export default {
         from: "",
         to: "",
         body: "",
+        scheduledAt: ""
       },
       isFormToPublishNewsletter: false,
       cancelRoute: ROUTES.EMAILS,

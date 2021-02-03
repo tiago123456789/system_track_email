@@ -18,6 +18,10 @@ export default class EmailService {
         private readonly producer: ProducerInterface
     ) { }
 
+    findById(id: Number): Promise<any> {
+        return this.repository.findById(id);
+    }
+
     getAllByUserId(userId: Number): Promise<any> {
         return this.repository.getAllByUserId(userId);
     }
@@ -53,15 +57,31 @@ export default class EmailService {
         return email;
     }
 
+    updateEmailScheduleded(id: string, status: string): Promise<any> {
+        return this.repository.updateEmailScheduleded(id, status);
+    }
+
     async create(email: Email) {
         let emailId = await this.repository.create(email);
         emailId = emailId[0];
         email.body = this.trackerActionService.applyTrackingClickAndOpen(email, emailId);
+        
         const uuid = Uuid.get();
+        if (email.scheduledAt) {
+            email.id = emailId
+            logger.info({ uuid: uuid, message: `Create email and scheduled to send in ${email.scheduledAt} to ${email.to}`});
+            await this.repository.scheduleEmail(email);
+            return;
+        }
+
         logger.info({ uuid: uuid, message: `Create email and send to ${email.to}`});
         return this.producer.publish(
             // @ts-ignore
             new EmailMessage(email.from, email.to, email.subject, email.body, uuid)
         )
+    }
+
+    getEmailsSchedulededs(): Promise<any> {
+        return this.repository.getEmailsSchedulededs();
     }
 }

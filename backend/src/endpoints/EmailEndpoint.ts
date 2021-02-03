@@ -83,7 +83,7 @@ export default class EmailEndpoint {
                 newEmail.subject, request.email,
                 newEmail.to, newEmail.body,
                 // @ts-ignore
-                request.userId
+                request.userId, null, newEmail.scheduledAt
             );
             await this.emailService.create(newEmail);
             response.sendStatus(201);

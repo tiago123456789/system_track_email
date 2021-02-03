@@ -7,7 +7,10 @@ export default class EmailMessage implements MessageInterface {
         public readonly to: string,
         public readonly subject: string,
         public readonly body: string,
-        public readonly uuid: string
+        public readonly uuid: string,
+        public readonly isEmailScheduleded : boolean = false,
+        public readonly emailId? : string,
+        public readonly emailScheduleId? : string
     ) {}
 
     get(): string {
@@ -16,7 +19,10 @@ export default class EmailMessage implements MessageInterface {
            to: this.to,
            subject: this.subject,
            body: this.body,
-           uuid: this.uuid
+           uuid: this.uuid,
+           emailId: this.emailId,
+           isEmailScheduleded: this.isEmailScheduleded,
+           emailScheduleId: this.emailScheduleId
         });
     }
 
