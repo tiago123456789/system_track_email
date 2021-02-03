@@ -18,7 +18,7 @@ Technologies used:
     - SQS(Stored message to consumer application consume and send email)
     - Pusher(Notify people email open and click in links)
     - Mysql
-    - Sentry(Centralized logging application)
+    - Sentry(Centralize logging application)
     - Swagger(For create documentation the api in part the newsletter used per client to publish newsletter).
 - Frontend(Web)
     - Vue
