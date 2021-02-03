@@ -52,6 +52,8 @@ Setting backend:
 - Create file *.env* based in file *.env.example*
 - Execute command: **docker-compose build**
 - Execute command: **docker-compose up -d**
+- Execute command: **npx knex --knexfile=./src/knexfile.ts migrate:latest**
+- Execute command: **npx knex --knexfile=./src/knexfile.ts seed:run**
 
 Settings web-frontend:
 -----------------------
